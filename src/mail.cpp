@@ -59,24 +59,24 @@ void Mail::print_mail(string uid)
 	if (reader == this->data.direction)
 	{
 		cout << left << str_time << endl;
-		cout << "\033[32";
+		cout << "\033[32m";
 		cout << left << uid + ':' << this->data.massage << endl;
-		cout << "\033[0";
+		cout << "\033[0m";
 	}
 	else
 	{
 		cout << left << str_time << endl;
 		if (this->data.state == unRead)
 		{
-			cout << "\033[31";
+			cout << "\033[31m";
 			cout << left << sender_id + ':' << this->data.massage << endl;
-			cout << "\033[0";
+			cout << "\033[0m";
 		}
 		else
 		{
-			cout << "\033[34";
+			cout << "\033[34m";
 			cout << left << sender_id + ':' << this->data.massage << endl;
-			cout << "\033[0";
+			cout << "\033[0m";
 		}
 	}
 }

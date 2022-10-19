@@ -1,32 +1,32 @@
-#include<cstdlib>
-#include"../inc/User_List.h"
-#include<unistd.h>
-#include"../inc/user.h"
-#include"../inc/User_List.h"
-#include"../inc/mail.h"
-#include"../inc/md5.h"
-#include"../inc/mytime.h"
-#include"../inc/order.h"
-#include"../inc/commodity.h"
-#include"../inc/Commodity_List.h"
-#include"../inc/seller.h"
-#include"../inc/consumer.h"
-#include"../inc/Order_List.h"
-#include<mutex>
+#include <cstdlib>
+#include "../inc/User_List.h"
+#include <unistd.h>
+#include "../inc/user.h"
+#include "../inc/User_List.h"
+#include "../inc/mail.h"
+#include "../inc/md5.h"
+#include "../inc/mytime.h"
+#include "../inc/order.h"
+#include "../inc/commodity.h"
+#include "../inc/Commodity_List.h"
+#include "../inc/seller.h"
+#include "../inc/consumer.h"
+#include "../inc/Order_List.h"
+#include <mutex>
+//#define _DEBUG_
 extern mutex u_mtx;
 extern User_List ulist;
 extern Order_List olist;
 extern Commodity_List clist;
 #include <termio.h>
 
-
 void confidential_input(char password[])
 {
-	string res  = getpass("\0");
-	strcpy(password,res.c_str());
+	string res = getpass("\0");
+	strcpy(password, res.c_str());
 }
 
-void string_to_md5(string md5, inform& res)
+void string_to_md5(string md5, inform &res)
 {
 	int head = 0;
 	int rear = 0;
@@ -144,14 +144,13 @@ static string info_to_string(inform info)
 
 User_List::User_List()
 {
-
 }
 
 User_List::~User_List()
 {
 	while (this->user_head)
 	{
-		inform_list* list = this->user_head;
+		inform_list *list = this->user_head;
 		this->user_head = list->next;
 		delete list;
 	}
@@ -160,10 +159,10 @@ User_List::~User_List()
 bool User_List::read_from_txt()
 {
 	u_mtx.lock();
-	inform_list* cur = this->user_head;
+	inform_list *cur = this->user_head;
 	while (cur)
 	{
-		inform_list* temp = cur;
+		inform_list *temp = cur;
 		cur = cur->next;
 		delete temp;
 	}
@@ -217,7 +216,7 @@ void User_List::write_to_txt()
 	}
 	else
 	{
-		inform_list* head = user_head;
+		inform_list *head = user_head;
 		while (head != NULL)
 		{
 			string info_str = info_to_string(head->data);
@@ -257,7 +256,7 @@ bool Judge(char password[20])
 			j3 = true;
 		}
 	}
-	return(j1 & j2 & j3);
+	return (j1 & j2 & j3);
 }
 
 void User_List::user_register()
@@ -270,7 +269,7 @@ void User_List::user_register()
 	}
 	bool flag = false;
 
-	inform_list* head = user_head;
+	inform_list *head = user_head;
 	while (head)
 	{
 		if (head->data.name == name)
@@ -291,24 +290,24 @@ void User_List::user_register()
 	char password[20] = "\0";
 	cout << "Please input your password(number,letter and captial required, no shorter than 9 characters):" << endl;
 
-	while (strlen(password)== 0)
+	while (strlen(password) == 0)
 	{
 		cin.getline(password, 19);
 	}
-	
 
 	while (!Judge(password))
 	{
 		cout << "\033[31m";
 		cout << "Please input an appropriate password:" << endl;
 		cout << "\033[0m";
+		password[0] = '\0';
 		while (strlen(password) == 0)
 		{
 			cin.getline(password, 19);
 		}
 	}
 
-	unsigned int* md5 = MD5_2(password);
+	unsigned int *md5 = MD5_2(password);
 
 	string address;
 	cout << "Please input your address:" << endl;
@@ -388,31 +387,37 @@ void User_List::user_register()
 	cout << "\033[33m";
 	cout << "You have registered an account! Your user id is :" << new_account.id << endl;
 	cout << "\033[0m";
-	
+
+	sleep(2);
 }
 
 void User_List::sign_in()
 {
 
-	inform_list* head = user_head;
 	if (!this->read_from_txt())
 	{
-		cout<<"\033[31mNo user now!Please register one!\033[0m";		
+		cout << "\033[31mNo user now!Please register one!\033[0m";
 		return;
 	}
 	string id;
 	cout << "Please input your user_id:" << endl;
 	cin >> id;
+	inform_list *head = user_head;
 	while (head)
 	{
-		if (head->data.id == id)
+		if (id == head->data.id)
 		{
+#ifdef _DEBUG_
+			cout << id;
+			cout << head->data.id;
+			cout << (head->data.id == id);
+#endif
 			if (head->data.con == frozen)
 			{
 				cout << "\033[31m";
 				cout << "Your account has been frozen!" << endl;
 				cout << "\033[0m";
-				
+				sleep(1);
 				return;
 			}
 			break;
@@ -424,7 +429,7 @@ void User_List::sign_in()
 		if (head == NULL)
 		{
 			cout << "\033[31m";
-			cout << "Please input a correct user_id:";
+			cout << "Please input a correct user_id:"<<endl;
 			cout << "\033[0m";
 			cin >> id;
 			head = user_head;
@@ -434,30 +439,32 @@ void User_List::sign_in()
 	char password[20];
 	cout << "Please input your password:" << endl;
 	confidential_input(password);
-	unsigned* md5 = MD5_2(password);
+	unsigned *md5 = MD5_2(password);
 	bool flag = false;
 	for (int i = 0; i < 5; i++)
 	{
-		if (md5[0] == head->data.md5_code[0] && md5[1] == head->data.md5_code[1]
-			&& md5[2] == head->data.md5_code[2] && md5[3] == head->data.md5_code[3])
+		if (md5[0] == head->data.md5_code[0] && md5[1] == head->data.md5_code[1] && md5[2] == head->data.md5_code[2] && md5[3] == head->data.md5_code[3])
 		{
 			flag = true;
-			cout << password << endl;
+			cout << endl<< "You have logged in!" << endl;
 			break;
 		}
 		else
 		{
 			cout << "\033[31m";
-			cout << endl << "Please input the right password(You have " << 5 - i << " time left):" << endl;
+			cout << endl
+				 << "Please input the right password(You have " << 5 - i << " time left):" << endl;
 			cout << "\033[0m";
+			char password[20];
+			confidential_input(password);
 			md5 = MD5_2(password);
 		}
 	}
-	//cout <<"flag == true" << endl;
+	// cout <<"flag == true" << endl;
 	if (flag == true)
 	{
-		cout << endl << "You have logged in!";
 		
+		sleep(1);
 		User user(id);
 		user.operate();
 	}
@@ -468,19 +475,19 @@ void User_List::sign_in()
 		cout << "\033[31m";
 		cout << "You have been frozen!" << endl;
 		cout << "\033[0m";
-		
+		sleep(1);
 		return;
 	}
 }
 
-inform_list* User_List::get_information()
+inform_list *User_List::get_information()
 {
 	return user_head;
 }
 
-inform_list* User_List::find_one_user(string uid)
+inform_list *User_List::find_one_user(string uid)
 {
-	inform_list* head = this->user_head;
+	inform_list *head = this->user_head;
 	while (head)
 	{
 		if (head->data.id == uid)
@@ -497,7 +504,7 @@ void User_List::forget_password()
 	cout << "Pleas input your account:" << endl;
 	string uid;
 	cin >> uid;
-	inform_list* list = this->user_head;
+	inform_list *list = this->user_head;
 	while (list)
 	{
 		if (list->data.id == uid && list->data.con == active)
@@ -509,7 +516,7 @@ void User_List::forget_password()
 			{
 				char password[20] = "\0";
 				cout << "Please input your new password(number,letter and captial required, no shorter than 9 characters):" << endl;
-				while(strlen(password) ==0)
+				while (strlen(password) == 0)
 					cin.getline(password, 19);
 
 				while (!Judge(password))
@@ -520,20 +527,24 @@ void User_List::forget_password()
 					cin.getline(password, 19);
 				}
 
-				unsigned int* md5 = MD5_2(password);
+				unsigned int *md5 = MD5_2(password);
 
 				list->data.md5_code[0] = md5[0];
 				list->data.md5_code[1] = md5[1];
 				list->data.md5_code[2] = md5[2];
 				list->data.md5_code[3] = md5[3];
-
+				cout <<"You have modified your password!"<<endl;
+				sleep(1);
+				return;
 			}
 			else
 			{
 				cout << "\033[31m";
 				cout << "It doesn't match your information!" << endl;
 				cout << "\033[0m";
+
 				
+
 				return;
 			}
 		}
@@ -542,12 +553,13 @@ void User_List::forget_password()
 	cout << "\033[31m";
 	cout << "No such user or your account has been frozen." << endl;
 	cout << "\033[0m";
-	
+	sleep(2);
+	return;
 }
 
 void User_List::update(string seller_id, string auctioneer_id, double money)
 {
-	inform_list* head = this->user_head;
+	inform_list *head = this->user_head;
 	bool flag1 = false, flag2 = false;
 	while (head && !(flag1 && flag2))
 	{
@@ -565,10 +577,10 @@ void User_List::update(string seller_id, string auctioneer_id, double money)
 	}
 }
 
-contacter* User_List::my_contacter(string uid)
+contacter *User_List::my_contacter(string uid)
 {
-	inform_list* head = this->user_head;
-	contacter* res_head = NULL, * res_tail = NULL;
+	inform_list *head = this->user_head;
+	contacter *res_head = NULL, *res_tail = NULL;
 	while (head)
 	{
 		if (head->data.id != uid)
@@ -591,10 +603,10 @@ contacter* User_List::my_contacter(string uid)
 	return res_head;
 }
 
-contacter* User_List::my_contacter()
+contacter *User_List::my_contacter()
 {
-	inform_list* head = this->user_head;
-	contacter* res_head = NULL, * res_tail = NULL;
+	inform_list *head = this->user_head;
+	contacter *res_head = NULL, *res_tail = NULL;
 	while (head)
 	{
 		if (res_head == NULL)

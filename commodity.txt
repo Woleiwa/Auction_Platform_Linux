@@ -1,0 +1,24 @@
+M00001,java primer plus,12.000000,1.000000,10,2022-10-17 17:36:33,U00001,Timeout,brand new one, without any spot, latest version
+M00002,java lesson,14.000000,2.000000,1,2022-10-09 20:55:14,U00001,OffShelf,published by our university
+M00003,java lesson,14.000000,2.000000,1,2022-10-09 20:35:58,U00001,OffShelf,published by our university
+M00004,java lesson,14.000000,2.000000,1,2022-10-09 18:39:16,U00001,OffShelf,published by our university
+M00005,java lesson,14.000000,2.000000,1,2022-10-09 18:39:16,U00001,OffShelf,published by our university
+M00006,java lesson,14.000000,2.000000,1,2022-10-09 18:39:16,U00001,OffShelf,published by our university
+M00007,java lesson,14.000000,2.000000,1,2022-10-09 18:39:16,U00001,OffShelf,published by our university
+M00008,java lesson,14.000000,2.000000,1,2022-10-09 18:39:16,U00001,OffShelf,published by our university
+M00009,java lesson,14.000000,2.000000,1,2022-10-09 18:39:16,U00001,OffShelf,published by our university
+M00010,java lesson,14.000000,2.000000,1,2022-10-09 18:39:16,U00001,OffShelf,published by our university
+M00011,java lesson,14.000000,2.000000,1,2022-10-09 18:39:16,U00001,OffShelf,published by our university
+M00012,The Spring of NJU,12.000000,1.000000,0,2022-10-17 12:39:26,U00001,Sold,photos shot in March, with beautiful blossoms
+M00013,The Summer of NJU,12.000000,1.000000,0,2022-10-17 12:40:20,U00001,Sold,photos shot in June
+M00014,The Autumn of NJU,1.000000,1.000000,1,2022-10-17 12:41:16,U00003,Timeout,12
+M00015,The Autumn of NJU,1.000000,1.000000,1,2022-10-17 12:41:16,U00003,Timeout,12
+M00016,The Autumn of NJU,1.000000,1.000000,1,2022-10-17 12:41:16,U00003,Timeout,12
+M00017,The Autumn of NJU,1.000000,1.000000,1,2022-10-17 12:41:16,U00003,Timeout,12
+M00018,The Autumn of NJU,1.000000,1.000000,1,2022-10-17 12:41:16,U00003,Timeout,12
+M00019,The Autumn of NJU,1.000000,1.000000,0,2022-10-17 12:41:16,U00003,Sold,12
+M00020,The Autumn of NJU,1.000000,1.000000,1,2022-10-17 12:41:16,U00003,Timeout,12
+M00021,The Autumn of NJU,1.000000,1.000000,1,2022-10-17 12:41:16,U00003,Timeout,12
+M00022,The Autumn of NJU,1.000000,1.000000,1,2022-10-17 12:41:16,U00003,Timeout,12
+M00023,The Autumn of NJU,1.000000,1.000000,1,2022-10-17 12:41:16,U00003,OffShelf,12
+M00024,The Winter of NJU,12.000000,1.000000,20,2022-10-17 17:21:43,U00002,Timeout,photos shot in Novemember, when the snowflake falls from the sky

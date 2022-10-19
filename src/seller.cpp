@@ -1,24 +1,24 @@
-#include"../inc/seller.h"
-#include"../inc/mytime.h"
-#include"../inc/commodity.h"
-#include"../inc/user.h"
-#include<iomanip>
+#include "../inc/seller.h"
+#include "../inc/mytime.h"
+#include "../inc/commodity.h"
+#include "../inc/user.h"
+#include <iomanip>
 #include <unistd.h>
-#include"../inc/order.h"
-#include"../inc/Commodity_List.h"
-#include"../inc/Order_List.h"
+#include "../inc/order.h"
+#include "../inc/Commodity_List.h"
+#include "../inc/Order_List.h"
 extern Order_List olist;
 extern Commodity_List clist;
 extern int instruction_input(int mini, int max, string opline);
 static const string operate_line = "instruction:1.release 2.check my commodity 3.modify infomation 4.off_shelf 5.check order 6.re-onshelf \n7.exit";
 
-Seller:: ~Seller()
+Seller::~Seller()
 {
-
 }
 
 void Seller::operate()
 {
+	
 	cout << endl;
 	cout << "******Welcome to Seller Platform******" << endl;
 	cout << "\033[33m";
@@ -68,13 +68,13 @@ void Seller::add_commodity()
 	string description;
 	inform my_inform = this->get_inform();
 
-	cout << "Please input the name of your commodity:"<<endl;
+	cout << "Please input the name of your commodity:" << endl;
 	while (name.length() == 0)
 	{
 		getline(cin, name);
 	}
 
-	cout << "Please input the description:"<<endl;
+	cout << "Please input the description:" << endl;
 	while (description.length() == 0)
 	{
 		getline(cin, description);
@@ -85,7 +85,7 @@ void Seller::add_commodity()
 
 	cout << "Please input the initial price of your commodity:" << endl;
 	cin >> price;
-	
+
 	while (price < 0 || cin.fail())
 	{
 		while (cin.fail())
@@ -139,13 +139,16 @@ void Seller::add_commodity()
 
 	string uid = my_inform.id;
 
-	cout << "Please check the information, input 'yes' to add the commodity, and other to cancel:"<<endl;
+	cout << "Please check the information, input 'yes' to add the commodity, and other to cancel:" << endl;
 	string judge;
 	cin >> judge;
 	if (judge != "yes")
 	{
-		cout << endl << "You have cancelled your releasion";
+		cout << endl
+			 << "You have cancelled your releasion";
+
 		
+
 		return;
 	}
 	if (num > 1)
@@ -173,24 +176,29 @@ void Seller::add_commodity()
 		Commodity mycommodity(name, price, add_price, num, description, uid);
 		mycommodity.create_commodity();
 	}
-	cout<< endl << "You have released a commodity";
+	cout << endl
+		 << "You have released a commodity";
+
 	
 }
 
 void Seller::check_commodity()
 {
 	clist.read_from_txt();
-	commodity_list* head = clist.seller_check(this->get_inform().id);
+	commodity_list *head = clist.seller_check(this->get_inform().id);
 	if (head == NULL)
 	{
 		cout << "\033[31m";
 		cout << "You haven't released any commodity." << endl;
 		cout << "\033[0m";
+
+		
+
 		return;
 	}
 	else
 	{
-		cout << left << setw(8) << "Id" << setw(30) << "Name" << setw(8) << "price" << setw(8) << "markup" << setw(8) << "number" << setw(24) << "releasing time" <<setw(12)<<"state";
+		cout << left << setw(8) << "Id" << setw(30) << "Name" << setw(8) << "price" << setw(8) << "markup" << setw(8) << "number" << setw(24) << "releasing time" << setw(12) << "state";
 		while (head)
 		{
 			Time time(head->data.auction_time);
@@ -212,12 +220,14 @@ void Seller::check_commodity()
 				cout << "\033[33m";
 				state = "Timeout";
 			}
-			cout <<endl<< left << setw(8) << head->data.id << setw(30) << head->data.name << setw(8) << head->data.price << setw(8) << head->data.add_price 
-				<< setw(8) << head->data.num << setw(24) << str_time << setw(12) << state;
+			cout << endl
+				 << left << setw(8) << head->data.id << setw(30) << head->data.name << setw(8) << head->data.price << setw(8) << head->data.add_price
+				 << setw(8) << head->data.num << setw(24) << str_time << setw(12) << state;
 			head = head->next;
 		}
 		cout << "\033[0m";
 	}
+
 	
 }
 
@@ -225,16 +235,19 @@ void Seller::check_order()
 {
 	olist.read_from_txt();
 	string uid = this->get_inform().id;
-	order_list* head = olist.seller_check(uid);
+	order_list *head = olist.seller_check(uid);
 	if (head == NULL)
 	{
-		cout << "\033[31m";;
+		cout << "\033[31m";
+		;
 		cout << "You have no order." << endl;
 		cout << "\033[0m";
+
 		
+
 		return;
 	}
-	cout << left << setw(8) << "Order" << setw(8) << "Auction" << setw(8) << "Commo_id" << setw(30) << "Commodity name" << setw(8) << "Bid" << setw(8) << "Number" << setw(24) << "Time" <<setw(12) << "State" << endl;
+	cout << left << setw(8) << "Order" << setw(8) << "Auction" << setw(8) << "Commo_id" << setw(30) << "Commodity name" << setw(8) << "Bid" << setw(8) << "Number" << setw(24) << "Time" << setw(12) << "State" << endl;
 	while (head)
 	{
 		string state = "Waiting";
@@ -256,14 +269,15 @@ void Seller::check_order()
 		head = head->next;
 	}
 	cout << "\033[0m";
+
 	
 }
 
 void Seller::modify_commo_information()
 {
 	clist.read_from_txt();
-	commodity_list* head = clist.seller_check(this->get_inform().id);
-	commodity_list* list = head;
+	commodity_list *head = clist.seller_check(this->get_inform().id);
+	commodity_list *list = head;
 	int num = 0;
 	while (head)
 	{
@@ -276,10 +290,10 @@ void Seller::modify_commo_information()
 	}
 	if (num == 0)
 	{
-		cout << "\033[31m";;
+		cout << "\033[31m";
 		cout << "You don't have any commodity on sale now!" << endl;
 		cout << "\033[0m";
-		
+
 		return;
 	}
 	cout << "Please input the commodity id you want to modify:" << endl;
@@ -301,9 +315,10 @@ void Seller::modify_commo_information()
 	}
 	if (!flag)
 	{
-		cout << "\033[31m";;
+		cout << "\033[31m";
 		cout << "No such commodity!";
 		cout << "\033[0m";
+		return;
 		
 	}
 	Commodity cur_commo(commodity_id);
@@ -333,13 +348,13 @@ void Seller::modify_commo_information()
 		}
 		cur_commo.modify_information(judge, information);
 		cout << "Modified successfully";
-		
+
 		return;
 	}
 	else
 	{
 		cout << "Operation has been cancelled!.";
-		
+
 		return;
 	}
 }
@@ -347,32 +362,35 @@ void Seller::modify_commo_information()
 void Seller::off_shelf()
 {
 	clist.read_from_txt();
-	commodity_list* head = clist.seller_check(this->get_inform().id);
+	commodity_list *head = clist.seller_check(this->get_inform().id);
 	if (head == NULL)
 	{
 		cout << "\033[31m";
 		cout << "You haven't released any commodity." << endl;
 		cout << "\033[0m";
 	}
-	else 
+	else
 	{
-		commodity_list* list = head;
+		commodity_list *list = head;
 		int num = 0;
 		while (list)
 		{
 			if (list->data.st == OnSale)
 			{
-				cout << list->data.id <<endl;
+				cout << list->data.id << endl;
 				num++;
 			}
 			list = list->next;
 		}
 		if (num == 0)
 		{
-			cout << "\033[31m";;
+			cout << "\033[31m";
+			;
 			cout << "Your commodities have been sold or offshelved" << endl;
 			cout << "\033[0m";
+
 			
+
 			return;
 		}
 		cout << "Please input the id of the commodity you want to off_shelf:" << endl;
@@ -391,7 +409,8 @@ void Seller::off_shelf()
 		}
 		if (!flag)
 		{
-			cout << "\033[31m";;
+			cout << "\033[31m";
+			;
 			cout << "You didn't release such a commodity or the commodity has been sold or offshelved." << endl;
 			cout << "\033[0m";
 		}
@@ -412,23 +431,28 @@ void Seller::off_shelf()
 			}
 		}
 	}
+
 	
+
 	return;
 }
 
 void Seller::re_on_shelf()
 {
 	clist.read_from_txt();
-	commodity_list* head = clist.seller_check(this->get_inform().id);
+	commodity_list *head = clist.seller_check(this->get_inform().id);
 	if (head == NULL)
 	{
-		cout << "\033[31m";;
+		cout << "\033[31m";
+		;
 		cout << "You haven't released any commodity." << endl;
 		cout << "\033[0m";
+
 		
+
 		return;
 	}
-	commodity_list* list = head;
+	commodity_list *list = head;
 	int num = 0;
 	while (head)
 	{
@@ -441,7 +465,8 @@ void Seller::re_on_shelf()
 	}
 	if (num == 0)
 	{
-		cout << "\033[31m";;
+		cout << "\033[31m";
+		;
 		cout << "Your have no offshelved commodity." << endl;
 		cout << "\033[0m";
 		
@@ -462,7 +487,8 @@ void Seller::re_on_shelf()
 	}
 	if (!flag)
 	{
-		cout << "\033[31m";;
+		cout << "\033[31m";
+		;
 		cout << "You didn't release such a commodity or the commodity is on sale or sold." << endl;
 		cout << "\033[0m";
 	}
@@ -482,6 +508,8 @@ void Seller::re_on_shelf()
 			cout << "Operation has been cancelled!." << endl;
 		}
 	}
+
 	
+
 	return;
 }

@@ -67,6 +67,7 @@ int main()
 
 void *start(void* arg)
 {
+	system("clear");
 	cout << endl;
 	cout << "Welcome to my auction platform!" << endl;
 	cout << "\033[33m";
@@ -106,7 +107,7 @@ void *start(void* arg)
 	{
 		update_flag = false;
 		cout << "******See you!******" << endl;
-		
+		sleep(1);
 	}
 }
 
@@ -121,7 +122,7 @@ void * update(void* arg)
 			upclist.write_to_txt();
 			cout << endl<<"Information updated!" << endl;
 		}
-		
+		sleep(1);
 	}
 }
 

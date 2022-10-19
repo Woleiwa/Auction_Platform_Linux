@@ -25,6 +25,8 @@ void display_commodity(commodity_list *head)
 		cout << "\e[31m"
 			 << "Users haven't released any commodity."
 			 << "\e[0m" << endl;
+
+		
 	}
 	else
 	{
@@ -56,6 +58,8 @@ void display_commodity(commodity_list *head)
 			head = head->next;
 		}
 		cout << "\033[0m";
+
+		
 	}
 }
 
@@ -165,6 +169,9 @@ void Admin::check_user()
 		cout << "\033[33m";
 		head = head->next;
 	}
+
+	
+
 	cout << "\033[0m";
 }
 
@@ -182,6 +189,8 @@ void Admin::check_order()
 	if (head == NULL)
 	{
 		cout << "There is no order." << endl;
+
+		
 
 		return;
 	}
@@ -207,6 +216,8 @@ void Admin::check_order()
 		head = head->next;
 	}
 	cout << "\033[0m";
+
+	
 }
 
 void Admin::off_shelf()
@@ -264,6 +275,8 @@ void Admin::off_shelf()
 		}
 	}
 
+	
+
 	return;
 }
 
@@ -286,6 +299,8 @@ void Admin::freeze_user()
 	{
 		cout << "There was no active users." << endl;
 
+		
+
 		return;
 	}
 	cout << "Please input the user id you want to freeze:" << endl;
@@ -306,6 +321,8 @@ void Admin::freeze_user()
 	{
 		cout << "No such user" << endl;
 
+		
+
 		return;
 	}
 	User user(uid);
@@ -321,6 +338,8 @@ void Admin::freeze_user()
 	{
 		cout << "Operation has been cancelled!" << endl;
 	}
+
+	
 
 	return;
 }
@@ -344,6 +363,8 @@ void Admin::thaw_user()
 	{
 		cout << "There was no frozen users." << endl;
 
+		
+
 		return;
 	}
 	cout << "Please input the user id you want to thaw:" << endl;
@@ -364,6 +385,8 @@ void Admin::thaw_user()
 	{
 		cout << "No such user" << endl;
 
+		
+
 		return;
 	}
 	User user(uid);
@@ -380,6 +403,8 @@ void Admin::thaw_user()
 		cout << "Operation has been cancelled!" << endl;
 	}
 
+	
+
 	return;
 }
 
@@ -393,6 +418,8 @@ void Admin::get_information()
 	if (strlen(info.id) == 0)
 	{
 		cout << "No such commodity!" << endl;
+
+		
 
 		return;
 	}
@@ -422,6 +449,8 @@ void Admin::get_information()
 		}
 		cout << "State:" << state << endl;
 	}
+
+	
 }
 
 extern void sort(commodity_list *head, int judge);
@@ -501,15 +530,19 @@ void Admin::check_mail()
 		}
 		mlist.read_mails(uid);
 		mlist.write_to_txt();
-		
-		cout << endl << "If you want to send a massage, please input 'yes':" << endl;
+
+		cout << endl
+			 << "If you want to send a massage, please input 'yes':" << endl;
 		string judge;
 		cin >> judge;
 		if (judge == "yes")
 		{
 			string content;
 			cout << "Please input your massage:" << endl;
-			cin >> content;
+			while (content.length() == 0)
+			{
+				getline(cin, content);
+			}
 			Mail new_mail(uid, receiver, content);
 			new_mail.add_to_list();
 		}
